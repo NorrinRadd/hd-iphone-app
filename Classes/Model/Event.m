@@ -143,10 +143,10 @@ static EKEventStore *eventStore = nil;
 
 -(NSString*)creatorName
 {
-    if (self.creatorName == nil) {
-        self.creatorName = [self makeCreatorName];
+    if (_creatorName == nil) {
+        _creatorName = [self makeCreatorName];
     }
-    return self.creatorName;
+    return _creatorName;
 }
 
 -(NSString*)makeCreatorName
