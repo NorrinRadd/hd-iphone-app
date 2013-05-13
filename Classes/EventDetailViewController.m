@@ -13,6 +13,7 @@
 #import "MapViewController.h"
 #import "Hacker_DojoAppDelegate.h"
 #import "EventList.h"
+#import <QuartzCore/QuartzCore.h>
 
 
 @implementation EventDetailViewController
@@ -245,19 +246,33 @@
             if (cell==nil) {
                 cell = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"longTextCell"]autorelease];
             }
+            
+            CGRect textFrame = CGRectMake(0,0,cell.frame.size.width-20,cell.frame.size.height-20);
+            UITextView* textView = [[UITextView alloc] initWithFrame:textFrame];
+            textView.editable = NO;
             if([event.details isEqualToString:@""]){
-                cell.textLabel.text = @"No description for this event.";
-                cell.textLabel.textColor = [UIColor lightGrayColor];
-            }else{
-                cell.textLabel.text = event.details;
-                cell.textLabel.textColor = [UIColor darkTextColor];
+                textView.text = @"No description for this event.";
+                textView.textColor = [UIColor lightGrayColor];
+            }else {
+                textView.text = event.details;
+                textView.textColor = [UIColor darkTextColor];
             }
             
-            //cell.imageView.image = [UIImage imageNamed:@"chat"];
-            cell.textLabel.font = [UIFont systemFontOfSize:14.0];
-            cell.textLabel.numberOfLines = 0;
+            textView.font = [UIFont systemFontOfSize:14.0];
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            textView.opaque = NO;
+            textView.backgroundColor = [UIColor clearColor];
+            [cell.contentView addSubview:textView];
+            
+            CGRect frame = textView.frame;
+            frame.size.height = textView.contentSize.height;
+            frame.size.width = textView.contentSize.width;
+            textView.frame = frame;
+            textView.layer.cornerRadius = 8.0f;
+            [textView release];
+            
             return cell;
         }else if(indexPath.row == 1){
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EventDetailItemCell"];
