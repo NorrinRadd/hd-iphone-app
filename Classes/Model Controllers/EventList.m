@@ -282,13 +282,13 @@
     [data release];
 }
 
--(NSMutableArray*)readScheduleFromDisk
+-(NSMutableDictionary*)readScheduleFromDisk
 {
     NSString *filePath = [self scheduleFilePath];
     NSData *data = [NSData dataWithContentsOfFile:filePath];
     if(data){
         NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
-        NSMutableArray *schedule = [unarchiver decodeObjectForKey:@"scheduledEvents"];
+        NSMutableDictionary *schedule = [unarchiver decodeObjectForKey:@"scheduledEvents"];
         [unarchiver finishDecoding];
         [unarchiver release];
         return schedule;
