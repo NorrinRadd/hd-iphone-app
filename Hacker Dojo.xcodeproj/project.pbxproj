@@ -149,7 +149,6 @@
 		FCBED56112A375F8004F4447 /* PullRefreshTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullRefreshTableViewController.h; sourceTree = "<group>"; };
 		FCBED56212A375F8004F4447 /* PullRefreshTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullRefreshTableViewController.m; sourceTree = "<group>"; };
 		FCBED56512A37635004F4447 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QuartzCore.framework; sourceTree = "<group>"; };
-		FCE4A041129D995D00B50CC7 /* BlueBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlueBackground.png; path = "../Adventure Engine/BlueBackground.png"; sourceTree = "<group>"; };
 		FCE4A0F312A0810C00B50CC7 /* alarm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = alarm.png; path = icons/alarm.png; sourceTree = "<group>"; };
 		FCE4A14D12A1ABF900B50CC7 /* JONListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JONListViewController.h; sourceTree = "<group>"; };
 		FCE4A14E12A1ABF900B50CC7 /* JONListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JONListViewController.m; sourceTree = "<group>"; };
@@ -187,7 +186,6 @@
 				FC5E1389129C87EC0014D616 /* chat.png */,
 				FC475395129B0FB10070C414 /* Dollar.png */,
 				FC5E1391129C8CF70014D616 /* noEvents.png */,
-				FCE4A041129D995D00B50CC7 /* BlueBackground.png */,
 				FC4498A6129505BC00820916 /* crop3.png */,
 				FC4498BC12950F6F00820916 /* Error.png */,
 				FC4498B312950D9900820916 /* noStaff.png */,
