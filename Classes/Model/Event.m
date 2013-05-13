@@ -36,6 +36,7 @@ static EKEventStore *eventStore = nil;
         self.rooms = [coder decodeObjectForKey:@"rooms"];
         self.status = [coder decodeObjectForKey:@"status"];
         self.creator = [coder decodeObjectForKey:@"creator"];
+        self.creatorName = [coder decodeObjectForKey:@"creatorName"];
         self.eventType = [coder decodeObjectForKey:@"eventType"];
         self.size = [coder decodeIntegerForKey:@"size"];
         self.details = [coder decodeObjectForKey:@"details"];
@@ -58,6 +59,7 @@ static EKEventStore *eventStore = nil;
     [coder encodeObject:self.rooms forKey:@"rooms"];
     [coder encodeObject:self.status forKey:@"status"];
     [coder encodeObject:self.creator forKey:@"creator"];
+    [coder encodeObject:self.creatorName forKey:@"creatorName"];
     [coder encodeObject:self.eventType forKey:@"eventType"];
     [coder encodeInteger:self.size forKey:@"size"];
     [coder encodeObject:self.details forKey:@"details"];
@@ -77,6 +79,7 @@ static EKEventStore *eventStore = nil;
     [rooms release];
     [status release];
     [creator release];
+    [self.creatorName release];
     [eventType release];
     [details release];
     [cost release];
@@ -139,6 +142,14 @@ static EKEventStore *eventStore = nil;
 }
 
 -(NSString*)creatorName
+{
+    if (self.creatorName == nil) {
+        self.creatorName = [self makeCreatorName];
+    }
+    return self.creatorName;
+}
+
+-(NSString*)makeCreatorName
 {
     NSArray *split = [self.creator componentsSeparatedByString:@"@"];
     if([split count]<=1){

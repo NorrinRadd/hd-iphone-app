@@ -177,6 +177,7 @@
                 anEvent.rooms = [jsonDict objectForKey:@"rooms"];
                 anEvent.status = [jsonDict objectForKey:@"status"];
                 anEvent.staff = [jsonDict objectForKey:@"staff"];
+                anEvent.creatorName = [jsonDict objectForKey:@"contact_name"];
                 anEvent.endTime = endDate;
                 //set event stuff
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"EventUpdatedNotification" object:anEvent];

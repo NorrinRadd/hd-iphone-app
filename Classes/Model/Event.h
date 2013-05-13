@@ -47,6 +47,7 @@
 @property (retain,nonatomic) NSDate *startTime;
 @property (retain,nonatomic) NSDate *endTime;
 @property (copy,nonatomic) NSString *creator;
+@property (nonatomic, copy) NSString* creatorName;
 @property (copy,nonatomic) NSString *eventType;
 @property (assign,nonatomic) NSInteger size;
 @property (assign,nonatomic) NSInteger eventId;
