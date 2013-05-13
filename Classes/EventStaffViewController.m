@@ -162,14 +162,34 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-	/*
-	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-	 [self.navigationController pushViewController:detailViewController animated:YES];
-	 [detailViewController release];
-	 */
+    if (indexPath.section == 0 && indexPath.row == 0) {
+        if ([MFMailComposeViewController canSendMail]) {
+            MFMailComposeViewController* vc = [[MFMailComposeViewController alloc] init];
+            vc.mailComposeDelegate = self;
+            [vc setSubject:event.title];
+            [vc setToRecipients:[NSArray arrayWithObject:event.creator]];
+            [vc setMessageBody:@"Count me in!" isHTML:NO];
+            if (vc)
+                [self presentViewController:vc animated:YES completion:NULL];
+            [vc release];
+        }
+        else {
+            // To Do: Alert view with "Configure your email in your device settings to email the event host"
+        }
+    }
+}
+
+
+#pragma mark - MFMailViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError*)error;
+{
+    if (result == MFMailComposeResultSent) {
+        NSLog(@"It's away!");
+    }
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 

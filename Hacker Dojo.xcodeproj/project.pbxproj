@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		9A157270173E13590095B280 /* LoadingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A15726D173E11D20095B280 /* LoadingTableViewCell.m */; };
 		9A157274173E1E070095B280 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A157273173E1E070095B280 /* Default-568h@2x.png */; };
+		9A157276174113C20095B280 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A157275174113C10095B280 /* MessageUI.framework */; };
 		FC3BA986129531F900CCEA0D /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3BA984129531F900CCEA0D /* SettingsViewController.m */; };
 		FC3BA987129531F900CCEA0D /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC3BA985129531F900CCEA0D /* SettingsViewController.xib */; };
 		FC3DA21712A73DB200180210 /* Dojo-Map.png in Resources */ = {isa = PBXBuildFile; fileRef = FC3DA21612A73DB200180210 /* Dojo-Map.png */; };
@@ -71,6 +72,7 @@
 		9A15726C173E11D20095B280 /* LoadingTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LoadingTableViewCell.h; path = TableViewCells/LoadingTableViewCell.h; sourceTree = "<group>"; };
 		9A15726D173E11D20095B280 /* LoadingTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = LoadingTableViewCell.m; path = TableViewCells/LoadingTableViewCell.m; sourceTree = "<group>"; };
 		9A157273173E1E070095B280 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		9A157275174113C10095B280 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		FC3BA983129531F900CCEA0D /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		FC3BA984129531F900CCEA0D /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		FC3BA985129531F900CCEA0D /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SettingsViewController.xib; path = Classes/SettingsViewController.xib; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A157276174113C20095B280 /* MessageUI.framework in Frameworks */,
 				FCBED56612A37635004F4447 /* QuartzCore.framework in Frameworks */,
 				FCE4A17412A2038F00B50CC7 /* EventKit.framework in Frameworks */,
 				FC6C2871129450A80079E069 /* UIKit.framework in Frameworks */,
@@ -270,6 +273,7 @@
 				FC6C2872129450A80079E069 /* Foundation.framework */,
 				FCBED56512A37635004F4447 /* QuartzCore.framework */,
 				FC6C2874129450A80079E069 /* CoreGraphics.framework */,
+				9A157275174113C10095B280 /* MessageUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

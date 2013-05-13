@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MFMailComposeViewController.h>
+
 @class Event;
 
-@interface EventStaffViewController : UITableViewController {
+@interface EventStaffViewController : UITableViewController <MFMailComposeViewControllerDelegate> {
     Event *event;
 }
 @property (retain,nonatomic) Event *event;
