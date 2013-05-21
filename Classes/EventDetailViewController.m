@@ -358,7 +358,9 @@
         MapViewController *vc = [[MapViewController alloc]initWithNibName:@"MapViewController" bundle:nil];
         [self.navigationController pushViewController:vc animated:YES];
         [vc release];
-    }else if(indexPath.section == 1 && ![self isHosting]){
+    }
+    // The RSVP button
+    else if(indexPath.section == 1 && ![self isHosting]){
         Hacker_DojoAppDelegate *appDel = (Hacker_DojoAppDelegate*)[[UIApplication sharedApplication]delegate];
         EventList *eventList = [appDel eventList];
         
@@ -382,8 +384,8 @@
                 [eventList addScheduledEvent:event];
             }else if(event.rsvp != eventRSVPNotAttending && selection == eventRSVPNotAttending){//else if Anything else -> notAttending
                 event.rsvp = selection;
-                [event removeMatchingCelendarEvent];                                            //Remove event from calendar
-                [eventList removeScheduledEvent:event];
+                if ([event removeMatchingCelendarEvent])                                            //Remove event from calendar
+                    [eventList removeScheduledEvent:event];
             }
             [tableView reloadData];
             NSLog(@"Selected:%@",[list objectAtIndex:selection]);

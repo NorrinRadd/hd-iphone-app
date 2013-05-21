@@ -213,11 +213,40 @@ static EKEventStore *eventStore = nil;
  */
 -(BOOL)createMatchingCalendarEvent
 {
+    BOOL __block success = NO;
+    NSUserDefaults *prefs=[NSUserDefaults standardUserDefaults];
+    BOOL warned = [prefs boolForKey:@"warnedCalendarPrivacy"];
     //EKEventStore *eventStore = nil;
     if(eventStore == nil){
         eventStore = [[EKEventStore alloc]init];
         NSLog(@"EventStore:%@",eventStore);
     }
+    
+    if ([eventStore respondsToSelector:@selector(requestAccessToEntityType:completion:)]) {
+        [eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+            if (granted) {
+                [prefs setBool:NO forKey:@"warnedCalendarPrivacy"];
+                success = [self createTheEvent];
+            }
+            else {
+                if (!warned) {
+                    NSString* msg = @"Enable calendar access in your privacy settings to enable adding events to your calendar";
+                    NSString* alertTitle = @"Couldn't add event to your calendar";
+                    [self displayNotificationAlert:alertTitle withMessage:msg];
+                    [prefs setBool:YES forKey:@"warnedCalendarPrivacy"];
+                }
+                NSLog(@"Error: Hackdojo.app does not have permission to save events to the calendar");
+            }
+        }];
+    }
+    else
+        success = [self createTheEvent];
+
+    return success;
+}
+
+-(bool)createTheEvent
+{
     EKEvent *calEvent = nil;
     if(self.calendarEventId){
         calEvent=[eventStore eventWithIdentifier:self.calendarEventId];
@@ -243,23 +272,71 @@ static EKEventStore *eventStore = nil;
     return success;
 }
 
+// Returns YES as long as calendarEventId can be guarenteed to be nil.
+// Otherwise, returns NO.
 -(BOOL)removeMatchingCelendarEvent
 {
+    BOOL __block retVal = YES;
+    NSUserDefaults *prefs=[NSUserDefaults standardUserDefaults];
+    BOOL warned = [prefs boolForKey:@"warnedCalendarPrivacy"];
     if(eventStore == nil){
         eventStore = [[EKEventStore alloc]init];
         NSLog(@"EventStore:%@",eventStore);
     }
 
     if(self.calendarEventId){
-        EKEvent *calEvent=[eventStore eventWithIdentifier:self.calendarEventId];
-        if(calEvent){
-            NSError *error = nil;
-            BOOL success = [eventStore removeEvent:calEvent span:EKSpanThisEvent error:&error];
-            self.calendarEventId = nil;
-            return success;
+        if ([eventStore respondsToSelector:@selector(requestAccessToEntityType:completion:)]) {
+            [eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+                if (granted) {
+                    [prefs setBool:NO forKey:@"warnedCalendarPrivacy"];
+                    retVal = [self removeTheEvent];
+                }
+                else {
+                    // one time alert that: Enable calendar access in your privacy settings to enable adding events to your calendar
+                    if (!warned) {
+                        NSString* msg = @"Enable calendar access in your privacy settings to enable removing scheduled events from your calendar";
+                        NSString* alertTitle = @"Couldn't remove the event from your calendar";
+                        [self displayNotificationAlert:alertTitle withMessage:msg];
+                        [prefs setBool:YES forKey:@"warnedCalendarPrivacy"];
+                    }
+                    NSLog(@"Error: Hackdojo.app does not have permission to remove events from the calendar");
+                }
+            }];
         }
+        else
+            retVal = [self removeTheEvent];
+        
     }
-    return NO;
+    return retVal;
+}
+
+// Returns NO if deletion fails, otherwise returns YES
+-(BOOL)removeTheEvent
+{
+    BOOL retVal = YES;
+    EKEvent *calEvent=[eventStore eventWithIdentifier:self.calendarEventId];
+    if(calEvent){
+        NSError *error = nil;
+        retVal = [eventStore removeEvent:calEvent span:EKSpanThisEvent error:&error];
+        if (retVal)
+            self.calendarEventId = nil;
+    }
+    else {
+        NSLog(@"ERROR: calendarEvendId cannot be found in the calendar");
+        self.calendarEventId = nil;     // Clean up the stale entry
+    }
+    return retVal;
+}
+
+-(void)displayNotificationAlert:(NSString*)alert withMessage:(NSString*)message
+{
+    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:alert
+                                                   message:message
+                                                  delegate:nil
+                                         cancelButtonTitle:@"OK"
+                                         otherButtonTitles:nil];
+    [alertView show];
+    [alertView release];
 }
 
 @end
