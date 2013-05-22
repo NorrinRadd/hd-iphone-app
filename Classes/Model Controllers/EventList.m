@@ -79,6 +79,12 @@
             NSInteger lastMonth = 0;
             NSInteger lastYear = 0;
             
+            NSDateComponents *todayComponents = [gregorian components:(NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:[NSDate date]];
+            NSInteger todayHours = [todayComponents hour];
+            NSInteger todayMinutes = [todayComponents minute];
+            NSInteger todaySeconds = [todayComponents second];
+            double secondsInToday = (double)(todaySeconds + (60*todayMinutes) + (3600*todayHours));
+            NSDate* midnightToday = [NSDate dateWithTimeIntervalSinceNow:-secondsInToday];
             
             for(NSDictionary *eventData in jsonArray){
                 NSNumber *newEventId = [eventData objectForKey:@"id"];
@@ -102,10 +108,14 @@
                 
                 [self fetchDetailForEvent:event];
                 
-                NSDateComponents *components = [gregorian components:(NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit) fromDate:event.startTime];
-                NSInteger newDay = [components day];
-                NSInteger newMonth = [components month];
-                NSInteger newYear = [components year];
+                NSDateComponents *eventComponents = [gregorian components:(NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit) fromDate:event.startTime];
+                NSInteger newDay = [eventComponents day];
+                NSInteger newMonth = [eventComponents month];
+                NSInteger newYear = [eventComponents year];
+
+                if ([event.endTime compare:midnightToday] == NSOrderedAscending)
+                    continue;
+                
                 if(newDay!=lastDay || newMonth!=lastMonth || newYear!=lastYear){
                     if(dayArray){
                         eventsArray = [eventsArray arrayByAddingObject:dayArray];
