@@ -26,7 +26,11 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //[scrollView setDelegate:self];
+    [scrollView setDelegate:self];
+    // The amount of scale needed to display pixels one to one
+    // from the new dojo map image to portrait retina screen.
+    // should find a way not to hardcode this
+    self.scrollView.maximumZoomScale = 3.0703125f;
 }
 
 
@@ -51,6 +55,10 @@
     // e.g. self.myOutlet = nil;
 }
 
+- (UIView*)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+    return self.imageView;
+}
 
 - (void)dealloc {
     [super dealloc];
