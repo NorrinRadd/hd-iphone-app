@@ -8,8 +8,6 @@
 
 #import "Event.h"
 
-
-
 @implementation Event
 @synthesize eventId,title,rooms,startTime, endTime,status,creator,eventType,size;
 @synthesize details,cost,rsvp,staff;
@@ -143,27 +141,29 @@ static EKEventStore *eventStore = nil;
 
 -(NSString*)creatorName
 {
-    if (_creatorName == nil) {
+    if ([_creatorName isEqualToString:@""]) {
+        [_creatorName release];
         _creatorName = [self makeCreatorName];
     }
     return _creatorName;
 }
 
+// Returns an owned object (one that needs releasing)
 -(NSString*)makeCreatorName
 {
     NSArray *split = [self.creator componentsSeparatedByString:@"@"];
     if([split count]<=1){
-        return self.creator;//Something is wrong, just return the creator
+        return [self.creator copy];//Something is wrong, just return the creator
     }
     
     NSArray *nameArray = [[split objectAtIndex:0] componentsSeparatedByString:@"."];
     if([nameArray count]>1){
-        return [NSString stringWithFormat:@"%@ %@",[[nameArray objectAtIndex:0]capitalizedString],[[nameArray objectAtIndex:1]capitalizedString]];
+        return [[NSString stringWithFormat:@"%@ %@",[[nameArray objectAtIndex:0]capitalizedString],[[nameArray objectAtIndex:1]capitalizedString]] copy];
     }
     if([nameArray count]){
-        return [[nameArray objectAtIndex:0]capitalizedString];
+        return [[[nameArray objectAtIndex:0]capitalizedString] copy];
     }
-    return self.creator;
+    return [self.creator copy];
 }
 
 -(NSString*)length
