@@ -44,6 +44,7 @@
 @property (copy,nonatomic) NSString *title;
 @property (copy,nonatomic) NSArray *rooms;
 @property (copy,nonatomic) NSString *details;
+@property (copy,nonatomic) NSString* notes;
 @property (retain,nonatomic) NSDate *startTime;
 @property (retain,nonatomic) NSDate *endTime;
 @property (copy,nonatomic) NSString *creator;

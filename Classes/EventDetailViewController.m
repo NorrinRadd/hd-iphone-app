@@ -160,7 +160,10 @@
         return 1;
     }
     if(section == 2){//Description Section
-        return 3;
+        if ([event.notes isEqualToString:@""])
+            return 3;
+        else
+            return 4;
     }
     if(section == 3){//Staff Section
         return 0;
@@ -242,62 +245,18 @@
     
     if(indexPath.section == 2){
         if(indexPath.row == 0){
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"longTextCell"];
-            if (cell==nil) {
-                cell = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"longTextCell"]autorelease];
-            }
-            
-            CGRect textFrame = CGRectMake(0,0,cell.frame.size.width-20,cell.frame.size.height-20);
-            UITextView* textView = [[UITextView alloc] initWithFrame:textFrame];
-            textView.editable = NO;
-            if([event.details isEqualToString:@""]){
-                textView.text = @"No description for this event.";
-                textView.textColor = [UIColor lightGrayColor];
-            }else {
-                textView.text = event.details;
-                textView.textColor = [UIColor darkTextColor];
-            }
-            
-            textView.font = [UIFont systemFontOfSize:14.0];
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            textView.opaque = NO;
-            textView.backgroundColor = [UIColor clearColor];
-            [cell.contentView addSubview:textView];
-            
-            CGRect frame = textView.frame;
-            frame.size.height = textView.contentSize.height;
-            frame.size.width = textView.contentSize.width;
-            textView.frame = frame;
-            textView.layer.cornerRadius = 8.0f;
-            [textView release];
-            
-            return cell;
+            return [self longTextCellForTableView:tableView withText:event.details andCellType:@"description"];
         }else if(indexPath.row == 1){
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EventDetailItemCell"];
-            if (cell==nil) {
-                cell = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EventDetailItemCell"]autorelease];
-            }
-            cell.textLabel.text = [event creatorName];//event.creator;
-            cell.imageView.image = [UIImage imageNamed:@"smallPerson"];
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-            return cell;
-        }else{
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EventDetailItemCell"];
-            if (cell==nil) {
-                cell = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EventDetailItemCell"]autorelease];
-            }
-            if([event.cost isEqualToString:@""] || event.cost == nil){
-                cell.textLabel.text = @"Free";
-            }else{
-                cell.textLabel.text = event.cost;
-            }
-            cell.imageView.image = [UIImage imageNamed:@"smallDollar"];
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            return cell;
+            if (event.notes == nil || [event.notes isEqualToString:@""])
+                return [self creatorNameCellForTableView:tableView];
+            else
+                return [self longTextCellForTableView:tableView withText:event.notes andCellType:@"notes"];
+        }else if (event.notes == nil || [event.notes isEqualToString:@""]) {
+            return [self priceCellForTableView:tableView];
+        }else if (indexPath.row == 2)
+            return [self creatorNameCellForTableView:tableView];
+        else {
+            return [self priceCellForTableView:tableView];
         }
     }
     
@@ -308,6 +267,74 @@
     return cell;
 }
 
+- (UITableViewCell*)creatorNameCellForTableView:(UITableView*)tableView
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EventDetailItemCell"];
+    if (cell==nil) {
+        cell = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EventDetailItemCell"]autorelease];
+    }
+    cell.textLabel.text = [event creatorName];//event.creator;
+    cell.imageView.image = [UIImage imageNamed:@"smallPerson"];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    return cell;
+}
+
+- (UITableViewCell*)longTextCellForTableView:(UITableView*)tableView withText:(NSString*)text andCellType:(NSString*)type
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"longTextCell"];
+    if (cell==nil) {
+        cell = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"longTextCell"]autorelease];
+    }
+    
+    CGRect textFrame = CGRectMake(0,0,cell.frame.size.width-20,cell.frame.size.height-20);
+    UITextView* textView = [[UITextView alloc] initWithFrame:textFrame];
+    textView.editable = NO;
+    if([text isEqualToString:@""]){
+        if ([type isEqualToString:@"description"])
+            textView.text = @"No description for this event.";
+        else
+            textView.text = @"No notes for this event.";
+        textView.textColor = [UIColor lightGrayColor];
+    }else {
+        textView.text = text;
+        textView.textColor = [UIColor darkTextColor];
+    }
+    
+    textView.font = [UIFont systemFontOfSize:14.0];
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    textView.opaque = NO;
+    textView.backgroundColor = [UIColor clearColor];
+    [cell.contentView addSubview:textView];
+    
+    CGRect frame = textView.frame;
+    frame.size.height = textView.contentSize.height;
+    frame.size.width = textView.contentSize.width;
+    textView.frame = frame;
+    textView.layer.cornerRadius = 8.0f;
+    [textView release];
+    
+    return cell;
+}
+
+- (UITableViewCell*)priceCellForTableView:(UITableView*)tableView
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EventDetailItemCell"];
+    if (cell==nil) {
+        cell = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EventDetailItemCell"]autorelease];
+    }
+    if([event.cost isEqualToString:@""] || event.cost == nil){
+        cell.textLabel.text = @"Free";
+    }else{
+        cell.textLabel.text = event.cost;
+    }
+    cell.imageView.image = [UIImage imageNamed:@"smallDollar"];
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
@@ -393,7 +420,8 @@
         listVC.title = @"RSVP";
         [self.navigationController pushViewController:listVC animated:YES];
         [listVC release];
-    }else if(indexPath.section == 2 && indexPath.row == 1){
+    }else if ( ([event.notes isEqualToString:@""] && (indexPath.section == 2 && indexPath.row == 1) ) ||
+              (![event.notes isEqualToString:@""] && (indexPath.section == 2 && indexPath.row == 2) ) ) {
         EventStaffViewController *vc = [[EventStaffViewController alloc]initWithNibName:@"EventStaffViewController" bundle:nil];
         vc.event = self.event;
         [self.navigationController pushViewController:vc animated:YES];

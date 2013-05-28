@@ -183,6 +183,7 @@
             //Back on main thread
             dispatch_async(dispatch_get_main_queue(),^{
                 anEvent.details = [jsonDict objectForKey:@"details"];
+                anEvent.notes = [jsonDict objectForKey:@"notes"];
                 anEvent.cost = [jsonDict objectForKey:@"fee"];
                 anEvent.rooms = [jsonDict objectForKey:@"rooms"];
                 anEvent.status = [jsonDict objectForKey:@"status"];
