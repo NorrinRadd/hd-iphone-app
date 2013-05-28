@@ -93,6 +93,7 @@
     if(indexPath.section == 0){
         cell.textLabel.text = [event creatorName];
         cell.textLabel.textColor = [UIColor darkTextColor];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }else{
         if([event.staff count]){
             cell.textLabel.text = [event.staff objectAtIndex:indexPath.row];
