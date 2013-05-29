@@ -79,12 +79,9 @@
             NSInteger lastMonth = 0;
             NSInteger lastYear = 0;
             
-            NSDateComponents *todayComponents = [gregorian components:(NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:[NSDate date]];
-            NSInteger todayHours = [todayComponents hour];
-            NSInteger todayMinutes = [todayComponents minute];
-            NSInteger todaySeconds = [todayComponents second];
-            double secondsInToday = (double)(todaySeconds + (60*todayMinutes) + (3600*todayHours));
-            NSDate* midnightToday = [NSDate dateWithTimeIntervalSinceNow:-secondsInToday];
+            NSDateComponents *todayComponents = [gregorian components:(NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit)
+                                                             fromDate:[NSDate date]];
+            NSDate *midnightToday = [gregorian dateFromComponents:todayComponents];
             
             for(NSDictionary *eventData in jsonArray){
                 NSNumber *newEventId = [eventData objectForKey:@"id"];
