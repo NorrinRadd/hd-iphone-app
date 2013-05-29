@@ -11,7 +11,7 @@
 
 
 @implementation EventStaffViewController
-@synthesize event;
+@synthesize event = _event;
 
 
 #pragma mark -
@@ -63,7 +63,10 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 2;
+    if([self.event.staff count])
+        return 2;
+    else
+        return 1;
 }
 
 
@@ -72,7 +75,7 @@
     if(section == 0){
         return 1;
     }
-    NSInteger cnt = [event.staff count];
+    NSInteger cnt = [self.event.staff count];
     if(cnt){
         return cnt;
     }
@@ -91,12 +94,12 @@
     }
     
     if(indexPath.section == 0){
-        cell.textLabel.text = [event creatorName];
+        cell.textLabel.text = [self.event creatorName];
         cell.textLabel.textColor = [UIColor darkTextColor];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }else{
-        if([event.staff count]){
-            cell.textLabel.text = [event.staff objectAtIndex:indexPath.row];
+        if([self.event.staff count]){
+            cell.textLabel.text = [self.event.staff objectAtIndex:indexPath.row];
             cell.textLabel.textColor = [UIColor darkTextColor];
         }else{
             cell.textLabel.text = @"No Scheduled Staff (Yet)";
@@ -167,8 +170,8 @@
         if ([MFMailComposeViewController canSendMail]) {
             MFMailComposeViewController* vc = [[MFMailComposeViewController alloc] init];
             vc.mailComposeDelegate = self;
-            [vc setSubject:event.title];
-            [vc setToRecipients:[NSArray arrayWithObject:event.creator]];
+            [vc setSubject:self.event.title];
+            [vc setToRecipients:[NSArray arrayWithObject:self.event.creator]];
             [vc setMessageBody:@"Count me in!" isHTML:NO];
             if (vc)
                 [self presentViewController:vc animated:YES completion:NULL];
@@ -211,7 +214,7 @@
 
 
 - (void)dealloc {
-    [event release];
+    [self.event release];
     [super dealloc];
 }
 

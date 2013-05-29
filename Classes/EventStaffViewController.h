@@ -11,9 +11,8 @@
 
 @class Event;
 
-@interface EventStaffViewController : UITableViewController <MFMailComposeViewControllerDelegate> {
-    Event *event;
-}
+@interface EventStaffViewController : UITableViewController <MFMailComposeViewControllerDelegate>
+
 @property (retain,nonatomic) Event *event;
 
 @end

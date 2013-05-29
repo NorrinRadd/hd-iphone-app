@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MFMailComposeViewController.h>
+
 @class Event;
 
-@interface EventDetailViewController : UIViewController <UITableViewDelegate,UITableViewDataSource> {
+@interface EventDetailViewController : UIViewController <UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate> {
     Event *event;
     IBOutlet UILabel *titleView;
     IBOutlet UILabel *lengthView;

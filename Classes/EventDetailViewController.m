@@ -422,12 +422,36 @@
         [listVC release];
     }else if ( ([event.notes isEqualToString:@""] && (indexPath.section == 2 && indexPath.row == 1) ) ||
               (![event.notes isEqualToString:@""] && (indexPath.section == 2 && indexPath.row == 2) ) ) {
-        EventStaffViewController *vc = [[EventStaffViewController alloc]initWithNibName:@"EventStaffViewController" bundle:nil];
-        vc.event = self.event;
-        [self.navigationController pushViewController:vc animated:YES];
-        [vc release];
+        if ([MFMailComposeViewController canSendMail] && self.event.staff.count == 0) {
+            MFMailComposeViewController* vc = [[MFMailComposeViewController alloc] init];
+            vc.mailComposeDelegate = self;
+            [vc setSubject:self.event.title];
+            [vc setToRecipients:[NSArray arrayWithObject:self.event.creator]];
+            [vc setMessageBody:@"Count me in!" isHTML:NO];
+            if (vc)
+                [self presentViewController:vc animated:YES completion:NULL];
+            [vc release];
+        }
+        else {
+            EventStaffViewController *vc = [[EventStaffViewController alloc]initWithNibName:@"EventStaffViewController" bundle:nil];
+            vc.event = self.event;
+            [self.navigationController pushViewController:vc animated:YES];
+            [vc release];
+        }
     }
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - MFMailViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError*)error;
+{
+    if (result == MFMailComposeResultSent) {
+        NSLog(@"It's away!");
+    }
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 @end
