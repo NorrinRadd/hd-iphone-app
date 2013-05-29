@@ -222,12 +222,17 @@
     NSArray *eventsArray = [NSArray array];
     NSArray *dayArray = nil;
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *todayComponents = [gregorian components:(NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit)
+                                                     fromDate:[NSDate date]];
+    NSDate *midnightToday = [gregorian dateFromComponents:todayComponents];
     NSInteger lastDay = 0;
     NSInteger lastMonth = 0;
     NSInteger lastYear = 0;
     
     for(Event *event in sortedArray){
         NSDateComponents *components = [gregorian components:(NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit) fromDate:event.startTime];
+        if ([event.startTime compare:midnightToday] == NSOrderedAscending)
+            continue;
         NSInteger newDay = [components day];
         NSInteger newMonth = [components month];
         NSInteger newYear = [components year];
